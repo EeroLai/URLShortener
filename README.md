@@ -1,5 +1,6 @@
 # URLShortener
-透過firebase結合express建構短網址產生與轉址服務
+透過 firebase & express 建構產生短網址與轉址服務
+
 ## Getting Started
 
 如何開始使用指南。
