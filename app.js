@@ -19,7 +19,7 @@ const firebaeInit = initializeApp(firebaseConfig);
 
 // Get reference to the Firebase database
 const db = getDatabase(firebaeInit);
-storeURL('123','test')
+
 console.log(db);
 // Generate a short URL
 function generateShortURL() {
