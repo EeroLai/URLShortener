@@ -37,8 +37,8 @@ function storeURL(shortURL, originalURL) {
 app.get('/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
   onValue(ref(db, 'urls/' + shortURL), (snapshot) => {
-    const originalURL = snapshot.val().originalURL;
-    res.redirect(originalURL);
+    const originalURL = (snapshot.val()) ? snapshot.val().originalURL : null;
+    (originalURL) ? res.redirect(originalURL) : console.log('false');
   });
 });
 
