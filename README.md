@@ -1,5 +1,5 @@
 # URLShortener
-
+透過firebase結合express建構短網址產生與轉址服務
 ## Getting Started
 
 如何開始使用指南。
@@ -27,4 +27,3 @@ npm run start
 - [ ] 後端功能
 - [ ] 前端畫面
 - [ ] 前端功能
- 
