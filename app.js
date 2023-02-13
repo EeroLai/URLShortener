@@ -20,7 +20,6 @@ const firebaeInit = initializeApp(firebaseConfig);
 // Get reference to the Firebase database
 const db = getDatabase(firebaeInit);
 
-console.log(db);
 // Generate a short URL
 function generateShortURL() {
   // Your implementation to generate a short URL
@@ -37,7 +36,7 @@ function storeURL(shortURL, originalURL) {
 // Redirect the user to the original URL
 app.get('/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL;
-  db.ref('urls/' + shortURL).once('value', (snapshot) => {
+  onValue(ref(db, 'urls/' + shortURL), (snapshot) => {
     const originalURL = snapshot.val().originalURL;
     res.redirect(originalURL);
   });
