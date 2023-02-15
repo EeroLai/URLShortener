@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const routes = require('./routes/index');
 
-// Set Route
+// Set Api Route
 app.use('/', routes);
+
+// Set Static
+app.use('/static/', express.static('static'));
 
 // Start the server
 app.listen(3000, () => {
