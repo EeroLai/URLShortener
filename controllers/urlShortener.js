@@ -3,9 +3,9 @@ const db = require('../utility/firebase');
 const { nanoid }  = require('nanoid');
 
 // Generate a short URL
-async function generateShortURL() {
+function generateShortURL() {
     // Your implementation to generate a short URL
-    let uuid = await nanoid(10);
+    let uuid = nanoid(10);
     return uuid;
 }
 
@@ -26,7 +26,8 @@ const shortURL = async (req, res) => {
 
 const newShortURL = async (req, res) => {
     const originalURL = req.params.originalURL;
-    const shortURL = generateShortURL();
+    const shortURL = await generateShortURL();
+    console.log(shortURL);
     storeURL(shortURL, originalURL);
     res.send({ shortURL: shortURL });
 }
