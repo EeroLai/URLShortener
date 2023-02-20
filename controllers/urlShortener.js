@@ -1,10 +1,12 @@
 const { ref, set, onValue } = require("firebase/database");
-const db =  require('../utility/firebase');
+const db = require('../utility/firebase');
+const { nanoid }  = require('nanoid');
 
 // Generate a short URL
-function generateShortURL() {
+async function generateShortURL() {
     // Your implementation to generate a short URL
-    return "abc123";
+    let uuid = await nanoid(10);
+    return uuid;
 }
 
 // Store the short URL and the original URL in the database
