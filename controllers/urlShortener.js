@@ -20,12 +20,9 @@ const shortURL = async (req, res) => {
     var pattern = new RegExp("[#$\\[\\].]");
     const shortURL = req.params.shortURL;
     if (!pattern.test(shortURL)) {
-        console.log('url')
         onValue(ref(db, 'urls/' + shortURL), (snapshot) => {
             const originalURL = (snapshot.val()) ? snapshot.val().originalURL : null;
             (originalURL) ? res.redirect(originalURL) : console.log('false');
-        }, {
-            onlyOnce: true
         });
     } else {
         res.end();
