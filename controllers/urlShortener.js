@@ -1,6 +1,6 @@
 const { ref, set, onValue } = require("firebase/database");
 const db = require('../utility/firebase');
-const { nanoid }  = require('nanoid');
+const { nanoid } = require('nanoid');
 
 // Generate a short URL
 function generateShortURL() {
@@ -17,15 +17,19 @@ function storeURL(shortURL, originalURL) {
 }
 
 const shortURL = async (req, res) => {
+    var pattern = new RegExp("[#$\\[\\].]");
     const shortURL = req.params.shortURL;
-    onValue(ref(db, 'urls/' + shortURL), (snapshot) => {
-        const originalURL = (snapshot.val()) ? snapshot.val().originalURL : null;
-        (originalURL) ? res.redirect(originalURL) : console.log('false');
-    });
+    if (!pattern.test(shortURL)) {
+        onValue(ref(db, 'urls/' + shortURL), (snapshot) => {
+            const originalURL = (snapshot.val()) ? snapshot.val().originalURL : null;
+            (originalURL) ? res.redirect(originalURL) : console.log('false');
+        });
+    }
+    res.end();
 }
 
 const newShortURL = async (req, res) => {
-    const originalURL = req.params.originalURL;
+    const originalURL = req.body.originalURL;
     const shortURL = await generateShortURL();
     console.log(shortURL);
     storeURL(shortURL, originalURL);

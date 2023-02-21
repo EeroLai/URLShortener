@@ -3,7 +3,7 @@ const app = express();
 const routes = require('./routes/index');
 
 // Set Api Route
-app.use('/test/', routes);
+app.use('/', routes);
 
 // Set Static
 app.use('/static/', express.static('static'));
