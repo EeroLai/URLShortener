@@ -1,6 +1,6 @@
 const btn_send = $('#btn_send');
 const input_url = $('#input_url');
-const url = 'http://localhost:3000/new/';
+const url = 'http://localhost:3000';
 
 (() => {
     function init() {
@@ -9,8 +9,10 @@ const url = 'http://localhost:3000/new/';
 
     function handleComponent() {
         btn_send.on('click', () => {
-            if (input_url.val().indexOf('https') || input_url.val().indexOf('http')) {
-                $.post(url, { 'originalURL': input_url.val() });
+            if (!input_url.val().indexOf('https') || !input_url.val().indexOf('http')) {
+                $.post(url + '/new/', { 'originalURL': input_url.val() }, (data) => {
+                    alert(url + '/' + data.shortURL);
+                });
             } else {
                 alert('url 無效');
             }

@@ -3,7 +3,7 @@ const app = express();
 const routes = require('./routes/index');
 
 app.use(express.json());       // to support JSON-encoded bodies
-app.use(express.urlencoded()); // to support URL-encoded bodies
+//app.use(express.urlencoded()); // to support URL-encoded bodies
 
 // Set Api Route
 app.use('/', routes);
