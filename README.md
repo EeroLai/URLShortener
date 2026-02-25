@@ -1,34 +1,33 @@
 # URLShortener
 
 A lightweight self-hosted URL shortener built with `Express` and `Firebase Realtime Database`.
-It supports both fast link creation and day-to-day link management from a built-in dashboard.
 
-![URLShortener Overview / URLShortener 概覽](./static/img/overview.png)
+English | [繁體中文](./README.zh-TW.md)
+
+![URLShortener Overview](./static/img/overview.png)
 
 ## Introduction
 
-`URLShortener` is designed to solve two problems in one service:
+`URLShortener` solves two practical needs in one service:
 
-- Create short links quickly from the home page
-- Manage links later from a dashboard (search, copy, delete, and view clicks)
-
-This project is a practical starter for internal tools, campaign links, and personal side projects.
+- Create short links quickly on the home page
+- Manage links later in a dashboard (search, copy, delete, and view clicks)
 
 ## Features
 
-- Create short URLs: `POST /new` and `POST /new/`
+- Create short URLs: `POST /new`, `POST /new/`
 - URL validation: only accepts `http://` and `https://`
 - Unique short code generation with collision checks
 - Redirect by short code: `GET /:shortURL`
 - Click counting on each redirect
-- Dashboard UI: `GET /dashboard`
+- Dashboard page: `GET /dashboard`
 - Management APIs:
-  - List all URLs: `GET /api/urls`
-  - Delete a URL: `DELETE /api/urls/:shortURL`
+  - List URLs: `GET /api/urls`
+  - Delete URL: `DELETE /api/urls/:shortURL`
 
 ## Setup
 
-1. Copy environment file:
+1. Copy env file:
 
 ```bash
 cp .env.example .env
@@ -55,20 +54,20 @@ Production:
 npm run start
 ```
 
-Default server URL: `http://localhost:3000`
+Default URL: `http://localhost:3000`
 
 ## Pages
 
-- Home (create short URL): `GET /`
-- Dashboard (manage URLs): `GET /dashboard`
+- Home: `GET /`
+- Dashboard: `GET /dashboard`
 
-## API Examples
+## API Example
 
-### Create short URL
+Create:
 
-`POST /new`
-
-Request body:
+```http
+POST /new
+```
 
 ```json
 {
@@ -76,39 +75,23 @@ Request body:
 }
 ```
 
-Success (`201`):
-
 ```json
 {
   "shortURL": "abc123xyz0"
 }
 ```
 
-### List URLs
+List:
 
-`GET /api/urls`
-
-Success (`200`):
-
-```json
-{
-  "items": [
-    {
-      "shortURL": "abc123xyz0",
-      "originalURL": "https://example.com/article/123",
-      "clicks": 5,
-      "createdAt": 1730000000000,
-      "lastAccessedAt": 1730000050000
-    }
-  ]
-}
+```http
+GET /api/urls
 ```
 
-### Delete URL
+Delete:
 
-`DELETE /api/urls/:shortURL`
-
-Success: `204 No Content`
+```http
+DELETE /api/urls/:shortURL
+```
 
 ## Tech Stack
 
