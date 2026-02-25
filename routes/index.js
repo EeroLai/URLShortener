@@ -7,5 +7,6 @@ router.get('/:shortURL', urlShortener.shortURL);
 
 // Endpoint to generate and store a short URL
 router.post('/new/', urlShortener.newShortURL);
+router.post('/new', urlShortener.newShortURL);
 
 module.exports = router;

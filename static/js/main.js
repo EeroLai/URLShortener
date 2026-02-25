@@ -1,23 +1,42 @@
-const btn_send = $('#btn_send');
-const input_url = $('#input_url');
-const url = 'http://localhost:3000';
+const btnSend = $('#btn_send');
+const inputUrl = $('#input_url');
+const baseUrl = window.location.origin;
 
 (() => {
     function init() {
-        handleComponent();
+        bindActions();
     }
 
-    function handleComponent() {
-        btn_send.on('click', () => {
-            if (!input_url.val().indexOf('https') || !input_url.val().indexOf('http')) {
-                $.post(url + '/new/', { 'originalURL': input_url.val() }, (data) => {
-                    alert(url + '/' + data.shortURL);
+    function bindActions() {
+        btnSend.on('click', async () => {
+            const originalURL = inputUrl.val().trim();
+            if (!/^https?:\/\//i.test(originalURL)) {
+                alert('Please enter a valid URL starting with http:// or https://');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${baseUrl}/new`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ originalURL })
                 });
-            } else {
-                alert('url 無效');
+
+                const data = await response.json();
+                if (!response.ok) {
+                    alert(data.error || 'Failed to create short URL');
+                    return;
+                }
+
+                alert(`${baseUrl}/${data.shortURL}`);
+            } catch (error) {
+                alert('Cannot connect to server');
             }
         });
     }
 
     init();
 })();
+
