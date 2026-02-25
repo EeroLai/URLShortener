@@ -1,0 +1,147 @@
+:root {
+    --bg-a: #fff2d7;
+    --bg-b: #cde4ff;
+    --card: #ffffff;
+    --text: #1b2733;
+    --muted: #5e6d7b;
+    --line: #d5dbe2;
+    --accent: #0f766e;
+    --accent-2: #134e4a;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Space Grotesk", sans-serif;
+    color: var(--text);
+    background: radial-gradient(circle at 15% 20%, var(--bg-a), transparent 55%),
+        radial-gradient(circle at 80% 10%, #ffd5ce, transparent 50%),
+        linear-gradient(145deg, #f3f7fb 0%, var(--bg-b) 100%);
+}
+
+.home-shell {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+}
+
+.home-card {
+    width: min(760px, 100%);
+    padding: 32px;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    box-shadow: 0 20px 55px rgba(16, 34, 54, 0.13);
+}
+
+.eyebrow {
+    margin: 0;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+h1 {
+    margin: 10px 0 10px;
+    font-size: clamp(28px, 5vw, 42px);
+    line-height: 1.05;
+}
+
+.subtext {
+    margin: 0 0 22px;
+    color: var(--muted);
+}
+
+.input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.input-row input {
+    flex: 1;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    padding: 12px 14px;
+    font-size: 15px;
+}
+
+.input-row button,
+.result-row button {
+    border: 0;
+    border-radius: 11px;
+    padding: 0 16px;
+    font-family: inherit;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    cursor: pointer;
+}
+
+.message {
+    min-height: 24px;
+    margin: 12px 0 0;
+    color: #b45309;
+}
+
+.result {
+    margin-top: 10px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.result.hidden {
+    display: none;
+}
+
+.result span {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+}
+
+.result-row {
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.result-row a {
+    flex: 1;
+    color: #0b4f97;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dashboard-link {
+    margin-top: 16px;
+    display: inline-block;
+    color: #155e75;
+    font-weight: 700;
+}
+
+@media (max-width: 680px) {
+    .home-card {
+        padding: 22px;
+    }
+
+    .input-row {
+        flex-direction: column;
+    }
+
+    .input-row button,
+    .result-row button {
+        min-height: 42px;
+    }
+}

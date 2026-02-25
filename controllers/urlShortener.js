@@ -1,4 +1,4 @@
-const { ref, set, get } = require('firebase/database');
+const { ref, set, get, update, remove } = require('firebase/database');
 const db = require('../utility/firebase');
 const { nanoid } = require('nanoid');
 
@@ -32,7 +32,9 @@ async function generateUniqueShortURL() {
 
 function storeURL(shortURL, originalURL) {
     return set(ref(db, `urls/${shortURL}`), {
-        originalURL
+        originalURL,
+        clicks: 0,
+        createdAt: Date.now()
     });
 }
 
@@ -44,15 +46,22 @@ const shortURL = async (req, res) => {
     }
 
     try {
-        const snapshot = await get(ref(db, `urls/${shortURL}`));
+        const urlRef = ref(db, `urls/${shortURL}`);
+        const snapshot = await get(urlRef);
         if (!snapshot.exists()) {
             return res.status(404).json({ error: 'Short URL not found' });
         }
 
-        const originalURL = snapshot.val().originalURL;
+        const row = snapshot.val();
+        const originalURL = row.originalURL;
         if (!isValidOriginalURL(originalURL)) {
             return res.status(500).json({ error: 'Stored URL is invalid' });
         }
+
+        await update(urlRef, {
+            clicks: Number(row.clicks || 0) + 1,
+            lastAccessedAt: Date.now()
+        });
 
         return res.redirect(originalURL);
     } catch (error) {
@@ -76,7 +85,52 @@ const newShortURL = async (req, res) => {
     }
 };
 
+const listURLs = async (req, res) => {
+    try {
+        const snapshot = await get(ref(db, 'urls'));
+        if (!snapshot.exists()) {
+            return res.json({ items: [] });
+        }
+
+        const urls = snapshot.val();
+        const items = Object.entries(urls).map(([shortURL, value]) => ({
+            shortURL,
+            originalURL: value.originalURL || '',
+            clicks: Number(value.clicks || 0),
+            createdAt: Number(value.createdAt || 0),
+            lastAccessedAt: Number(value.lastAccessedAt || 0)
+        }));
+
+        items.sort((a, b) => b.createdAt - a.createdAt);
+        return res.json({ items });
+    } catch (error) {
+        return res.status(500).json({ error: 'Failed to list URLs' });
+    }
+};
+
+const deleteURL = async (req, res) => {
+    const shortURL = req.params.shortURL;
+    if (INVALID_KEY_PATTERN.test(shortURL)) {
+        return res.status(400).json({ error: 'Invalid short URL format' });
+    }
+
+    try {
+        const urlRef = ref(db, `urls/${shortURL}`);
+        const snapshot = await get(urlRef);
+        if (!snapshot.exists()) {
+            return res.status(404).json({ error: 'Short URL not found' });
+        }
+
+        await remove(urlRef);
+        return res.status(204).send();
+    } catch (error) {
+        return res.status(500).json({ error: 'Failed to delete short URL' });
+    }
+};
+
 module.exports = {
     shortURL,
-    newShortURL
+    newShortURL,
+    listURLs,
+    deleteURL
 };

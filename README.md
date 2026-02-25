@@ -1,26 +1,41 @@
 # URLShortener
 
-使用 `Express` + `Firebase Realtime Database` 的短網址服務。
+A lightweight self-hosted URL shortener built with `Express` and `Firebase Realtime Database`.
+It supports both fast link creation and day-to-day link management from a built-in dashboard.
+
+![URLShortener Overview / URLShortener 概覽](./static/img/overview.png)
+
+## Introduction
+
+`URLShortener` is designed to solve two problems in one service:
+
+- Create short links quickly from the home page
+- Manage links later from a dashboard (search, copy, delete, and view clicks)
+
+This project is a practical starter for internal tools, campaign links, and personal side projects.
 
 ## Features
 
-- 建立短網址（`POST /new` 或 `POST /new/`）
-- 驗證輸入網址（只接受 `http://`、`https://`）
-- 自動產生短碼並檢查碰撞
-- 依短碼導向原始網址（`GET /:shortURL`）
-- 前端頁面可直接輸入網址並取得短連結（`GET /`）
+- Create short URLs: `POST /new` and `POST /new/`
+- URL validation: only accepts `http://` and `https://`
+- Unique short code generation with collision checks
+- Redirect by short code: `GET /:shortURL`
+- Click counting on each redirect
+- Dashboard UI: `GET /dashboard`
+- Management APIs:
+  - List all URLs: `GET /api/urls`
+  - Delete a URL: `DELETE /api/urls/:shortURL`
 
-## Getting Started
+## Setup
 
-1. 複製環境變數：
+1. Copy environment file:
 
 ```bash
 cp .env.example .env
 ```
 
-2. 設定 Firebase 相關參數到 `.env`
-
-3. 安裝套件：
+2. Fill Firebase settings in `.env`
+3. Install dependencies:
 
 ```bash
 npm install
@@ -28,39 +43,76 @@ npm install
 
 ## Run
 
-開發模式：
+Development:
 
 ```bash
 npm run dev
 ```
 
-正式模式：
+Production:
 
 ```bash
 npm run start
 ```
 
-## API
+Default server URL: `http://localhost:3000`
 
-### `POST /new`
+## Pages
+
+- Home (create short URL): `GET /`
+- Dashboard (manage URLs): `GET /dashboard`
+
+## API Examples
+
+### Create short URL
+
+`POST /new`
 
 Request body:
 
 ```json
 {
-  "originalURL": "https://example.com"
+  "originalURL": "https://example.com/article/123"
 }
 ```
 
-成功回應（201）：
+Success (`201`):
 
 ```json
 {
-  "shortURL": "generatedCode"
+  "shortURL": "abc123xyz0"
 }
 ```
 
-### `GET /:shortURL`
+### List URLs
 
-- 成功：302 redirect 到原始網址
-- 失敗：回傳 404 JSON 錯誤
+`GET /api/urls`
+
+Success (`200`):
+
+```json
+{
+  "items": [
+    {
+      "shortURL": "abc123xyz0",
+      "originalURL": "https://example.com/article/123",
+      "clicks": 5,
+      "createdAt": 1730000000000,
+      "lastAccessedAt": 1730000050000
+    }
+  ]
+}
+```
+
+### Delete URL
+
+`DELETE /api/urls/:shortURL`
+
+Success: `204 No Content`
+
+## Tech Stack
+
+- Node.js
+- Express
+- Firebase Realtime Database
+- Nano ID
